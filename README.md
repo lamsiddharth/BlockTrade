@@ -54,88 +54,111 @@ graph LR
     D --> A
 ```
 
-Steps:
+# Project Setup Instructions
 
-Navigate to the project directory:
+## Steps to Start the Application
 
+### 1. Navigate to the Project Directory
 Open a terminal and navigate to the root directory of your project.
 
-Start Docker Compose (winding up):
+### 2. Start Docker Compose (Winding Up)
+Ensure your `docker-compose.yml` file is in the appropriate directory. Use the following commands:
 
-Bash
+```bash
+cd /docker  # Adjust this path if your docker-compose.yml file is located elsewhere
 
-cd /docker  # Change this path if your docker-compose.yml file is located elsewhere
-docker-compose up -d
-This command starts all services defined in your docker-compose.yml file in detached mode (-d).
+docker-compose up -d  # Starts all services in detached mode
+```
 
-Install Dependencies and Start Services (Serial Execution):
+### 3. Install Dependencies and Start Services (Serial Execution)
+It's important to install dependencies and start services in a specific order.
 
-Important: We need to install dependencies and start services individually for a specific order:
-
-a) API:
-
-Bash
-
+#### a) API Service
+```bash
 cd api
 npm install
 npm run dev
 cd ..  # Move back to project root
+```
 This installs dependencies and starts the API service in development mode.
 
-b) Engine:
-
-Bash
-
+#### b) Engine Service
+```bash
 cd engine
 npm install
 npm run dev
 cd ..  # Move back to project root
-Similar to the API, this installs dependencies and starts the engine service.
+```
+Similar to the API service, this installs dependencies and starts the engine service.
 
-c) WS:
-
-Bash
-
+#### c) WebSocket Service (WS)
+```bash
 cd ws
 npm install
 npm run dev
 cd ..  # Move back to project root
-This installs dependencies and starts the websocket service.
+```
+Installs dependencies and starts the WebSocket service.
 
-d) Frontend:
-
-Bash
-
+#### d) Frontend Service
+```bash
 cd frontend
 npm install
 npm run dev
 cd ..  # Move back to project root
-This installs dependencies and starts the frontend service.
+```
+Installs dependencies and starts the frontend service.
 
-e) Marketmaker:
-
-Bash
-
+#### e) Marketmaker Service
+```bash
 cd marketmaker
 npm install
 npm run dev
 cd ..  # Move back to project root
-This installs dependencies and starts the marketmaker service.
+```
+Installs dependencies and starts the marketmaker service.
 
-Note: After following these steps, your entire application stack should be running in separate Docker containers. You can access the application based on the ports exposed in your docker-compose.yml file.
+### 4. Access the Application
+After completing the above steps, your entire application stack should be running in separate Docker containers. Access the application using the ports defined in your `docker-compose.yml` file.
 
-Additional Information:
+---
 
-To stop all running containers, use:
+## Additional Commands
 
-Bash
-
-cd /docker  # Change this path if your docker-compose.yml file is located elsewhere
+### Stop All Running Containers
+```bash
+cd /docker  # Adjust this path if necessary
 docker-compose down
-To restart all services:
+```
 
-Bash
-
-cd /docker  # Change this path if your docker-compose.yml file is located elsewhere
+### Restart All Services
+```bash
+cd /docker  # Adjust this path if necessary
 docker-compose up -d
-Remember to update the paths in the commands if your project structure or docker-compose.yml location differs.
+```
+
+---
+
+## Notes
+- **Paths:** Update the paths in the commands if your project structure or the location of your `docker-compose.yml` file differs.
+- **Environment Variables:** Ensure all required environment variables are set before starting the services.
+
+---
+
+## Example Project Structure
+```
+project-root/
+├── docker/
+│   └── docker-compose.yml
+├── api/
+├── engine/
+├── ws/
+├── frontend/
+└── marketmaker/
+```
+
+---
+
+## Troubleshooting
+- **Container Not Starting:** Check logs using `docker-compose logs`.
+- **Dependency Issues:** Ensure all `npm install` commands complete without errors.
