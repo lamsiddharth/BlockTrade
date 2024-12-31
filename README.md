@@ -52,7 +52,7 @@ graph LR
     C -- Redis Queue --> E{Database Processor}
     E --> F[Timescale DB]
     D --> A
-
+```
 
 Steps:
 
