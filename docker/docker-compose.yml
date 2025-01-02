@@ -19,5 +19,30 @@ services:
     ports:
       - "6379:6379"
 
-volumes:
-  timescale-data:
+  api:
+    build: 
+      context: ../api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - timescaledb
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DB_HOST=timescaledb
+
+  engine:
+    build:
+      context: ../engine
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - WITH_SNAPSHOT=true
+
+  websocket:
+    build:
+      context: ../ws
+      dockerfile: Dockerfile
