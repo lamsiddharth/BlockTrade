@@ -7,11 +7,11 @@ export class UserManager {
     private users: Map<string, User> = new Map();
 
     private constructor() {
-        
+        console.log("UserManager initialized.");
     }
 
     public static getInstance() {
-        if (!this.instance)  {
+        if (!this.instance)  { 
             this.instance = new UserManager();
         }
         return this.instance;
