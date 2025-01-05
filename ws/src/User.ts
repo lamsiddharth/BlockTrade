@@ -15,7 +15,7 @@ export class User {
 
     private subscriptions: string[] = [];
 
-    public subscribe(subscription: string) {
+    public subscribe(subscription: string, ) {
         this.subscriptions.push(subscription);
     }
 
@@ -31,11 +31,12 @@ export class User {
         this.ws.on("message", (message: string) => {
             const parsedMessage: IncomingMessage = JSON.parse(message);
             if (parsedMessage.method === SUBSCRIBE) {
-                parsedMessage.params.forEach(s => SubscriptionManager.getInstance().subscribe(this.id, s));
+                parsedMessage.params.forEach((s) => {SubscriptionManager.getInstance().subscribe(this.id, s), this.subscribe(s)});
             }
 
+
             if (parsedMessage.method === UNSUBSCRIBE) {
-                parsedMessage.params.forEach(s => SubscriptionManager.getInstance().unsubscribe(this.id, parsedMessage.params[0]));
+                parsedMessage.params.forEach(s => {SubscriptionManager.getInstance().unsubscribe(this.id, parsedMessage.params[0]), this.unsubscribe(s)});
             }
         });
     }

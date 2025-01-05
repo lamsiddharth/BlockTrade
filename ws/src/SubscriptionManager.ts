@@ -18,7 +18,7 @@ export class SubscriptionManager {
         }
         return this.instance;
     }
-
+    
     public subscribe(userId: string, subscription: string) {
         if (this.subscriptions.get(userId)?.includes(subscription)) {  
             return
@@ -59,4 +59,4 @@ export class SubscriptionManager {
     getSubscriptions(userId: string) {
         return this.subscriptions.get(userId) || [];
     }
-}
+} 
