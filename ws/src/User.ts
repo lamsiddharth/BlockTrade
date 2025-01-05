@@ -29,16 +29,37 @@ export class User {
 
     private addListeners() {
         this.ws.on("message", (message: string) => {
-            const parsedMessage: IncomingMessage = JSON.parse(message);
-            if (parsedMessage.method === SUBSCRIBE) {
-                parsedMessage.params.forEach((s) => {SubscriptionManager.getInstance().subscribe(this.id, s), this.subscribe(s)});
-            }
-
-
-            if (parsedMessage.method === UNSUBSCRIBE) {
-                parsedMessage.params.forEach(s => {SubscriptionManager.getInstance().unsubscribe(this.id, parsedMessage.params[0]), this.unsubscribe(s)});
+            try {
+                const parsedMessage: IncomingMessage = JSON.parse(message);
+                if (parsedMessage.method === SUBSCRIBE) {
+                    parsedMessage.params.forEach((s) => {
+                        if (!this.subscriptions.includes(s)) {
+                            SubscriptionManager.getInstance().subscribe(this.id, s);
+                            this.subscribe(s);
+                        }
+                    });
+                }
+        
+                if (parsedMessage.method === UNSUBSCRIBE) {
+                    parsedMessage.params.forEach((s) => {
+                        if (this.subscriptions.includes(s)) {
+                            SubscriptionManager.getInstance().unsubscribe(this.id, s);
+                            this.unsubscribe(s);
+                        }
+                    });
+                }
+                this.ws.send(
+                    JSON.stringify({
+                        status: "success",
+                        action: parsedMessage.method,
+                        params: parsedMessage.params,
+                    })
+                ); 
+            } catch (err) {
+                console.error("Failed to process message:", err);
             }
         });
+        
     }
 
 }
