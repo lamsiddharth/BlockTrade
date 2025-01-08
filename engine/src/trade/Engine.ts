@@ -223,6 +223,7 @@ export class Engine {
         this.updateDbOrders(order, executedQty, fills, market);
         this.publisWsDepthUpdates(fills, price, side, market);
         this.publishWsTrades(fills, userId, market);
+        this.sendUpdatedDepthAt(price.toString(), market);
         return { executedQty, fills, orderId: order.orderId };
     }
 
@@ -377,7 +378,7 @@ export class Engine {
         }
     }
 
-    checkAndLockFunds(baseAsset: string, quoteAsset: string, side: "buy" | "sell", userId: string, asset: string, price: string, quantity: string) {
+     checkAndLockFunds(baseAsset: string, quoteAsset: string, side: "buy" | "sell", userId: string, asset: string, price: string, quantity: string) {
         if (side === "buy") {
             if ((this.balances.get(userId)?.[quoteAsset]?.available || 0) < Number(quantity) * Number(price)) {
                 throw new Error("Insufficient funds");
