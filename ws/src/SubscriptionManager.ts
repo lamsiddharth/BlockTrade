@@ -9,16 +9,16 @@ export class SubscriptionManager {
  
     private constructor() {
         this.redisClient = createClient(); 
-        this.redisClient.connect();
+        this.redisClient.connect(); 
     }
 
     public static getInstance() {
         if (!this.instance)  {
-            this.instance = new SubscriptionManager();
+            this.instance = new SubscriptionManager(); 
         }
         return this.instance;
     }
-    
+
     public subscribe(userId: string, subscription: string) {
         if (this.subscriptions.get(userId)?.includes(subscription)) {  
             return
